@@ -1,0 +1,11 @@
+[package]
+name = "Components"
+version = "0.1.0"
+authors = ["Tyler Moroso <tlmoroso55@gmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+specs = "0.15.1"
+specs-derive = "0.4.0"
