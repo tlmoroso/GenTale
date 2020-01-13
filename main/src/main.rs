@@ -1,10 +1,23 @@
-use ggez::*;
+use std::env;
+use std::path;
+use std::path::PathBuf;
+
+use ggez;
+use ggez::{conf, ContextBuilder, GameResult, event, Context, graphics};
+use ggez::graphics::{Image, draw, DrawParam, Color};
+use ggez::filesystem::resources_dir;
+
 use specs::prelude::*;
-#[macro_use]
-extern crate specs_derive;
 
 extern crate Components;
-use Components::Physics::Physics;
+use Components::Physics::*;
+use Components::Sprite::Sprite;
+
+extern crate Entities;
+use Entities::Main_Character::MainCharacter;
+use Entities::{MyEntity};
+
+use ggez::nalgebra::Point2;
 
 struct State {
     ecs:    World,
@@ -23,7 +36,15 @@ impl ggez::event::EventHandler for State {
         Ok(())
     }
     fn draw(&mut self, ctx: &mut Context) -> GameResult<()> {
+        graphics::clear(ctx, graphics::WHITE);
 
+        let physics = self.ecs.read_storage::<Physics>();
+        let sprites = self.ecs.read_storage::<Sprite>();
+
+        for (phys, sprite) in (&physics, &sprites).join() {
+            draw(ctx, &sprite.image, DrawParam::default().dest(phys.position).color(Color::from_rgb(255,0,0)))?;
+        }
+        graphics::present(ctx)?;
         Ok(())
     }
 }
@@ -36,14 +57,40 @@ pub fn main() {
     register_components(&mut state.ecs);
 
     let c = conf::Conf::new();
-    let (ref mut ctx, ref mut event_loop) = ContextBuilder::new("first_game", "Tyler_Moroso")
-        .conf(c)
+    let mut ctx = ContextBuilder::new("first_game", "Tyler_Moroso").conf(c);
+
+    if let Ok(manifest_dir) = env::var("CARGO_MANIFEST_DIR") {
+        let mut path = path::PathBuf::from(manifest_dir);
+        path.push("resources");
+        ctx = ctx.add_resource_path(path);
+    }
+
+    let (ref mut ctx, ref mut event_loop) = ctx
         .build()
         .unwrap();
+
+    let mut resource_path = PathBuf::new();
+    resource_path.push(resources_dir(ctx));
+    resource_path.push("MainCharacter");
+    resource_path.push("main_character_3.png");
+
+    let mc = MainCharacter {
+        physics: Physics {
+            position: Point2::new(100.0, 100.0),
+            velocity: 0,
+            acceleration: 0
+        },
+        sprite: Sprite {
+            image: Image::new(ctx, PathBuf::from("\\MainCharacter\\main_character_3.png").as_path()).unwrap()
+        }
+    };
+
+    mc.build_entity(&mut state.ecs);
 
     event::run(ctx, event_loop, state).unwrap();
 }
 
 fn register_components(ecs: &mut World) {
-    ecs.register::<Physics>()
+    ecs.register::<Physics>();
+    ecs.register::<Sprite>();
 }

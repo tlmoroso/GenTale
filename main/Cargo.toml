@@ -11,3 +11,4 @@ ggez = "0.5.1"
 specs = "0.15.1"
 specs-derive = "0.4.0"
 Components = {path = "..\\Components"}
+Entities = {path = "..\\Entities"}

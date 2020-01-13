@@ -1,14 +1,10 @@
 use specs_derive;
 use specs::prelude::*;
+use ggez::nalgebra::Point2;
 
 #[derive(Component)]
 pub struct Physics {
-    position: Position,
-    velocity: i32,
-    acceleration: i32
-}
-
-struct Position {
-    x: u32,
-    y: u32,
+    pub position: Point2<f32>,
+    pub velocity: i32,
+    pub acceleration: i32
 }
