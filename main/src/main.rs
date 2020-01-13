@@ -4,7 +4,7 @@ use std::path::PathBuf;
 
 use ggez;
 use ggez::{conf, ContextBuilder, GameResult, event, Context, graphics};
-use ggez::graphics::{Image, draw, DrawParam, Color};
+use ggez::graphics::{Image, draw, DrawParam};
 use ggez::filesystem::resources_dir;
 
 use specs::prelude::*;
@@ -42,7 +42,7 @@ impl ggez::event::EventHandler for State {
         let sprites = self.ecs.read_storage::<Sprite>();
 
         for (phys, sprite) in (&physics, &sprites).join() {
-            draw(ctx, &sprite.image, DrawParam::default().dest(phys.position).color(Color::from_rgb(255,0,0)))?;
+            draw(ctx, &sprite.image, DrawParam::default().dest(phys.position))?;
         }
         graphics::present(ctx)?;
         Ok(())
@@ -74,18 +74,7 @@ pub fn main() {
     resource_path.push("MainCharacter");
     resource_path.push("main_character_3.png");
 
-    let mc = MainCharacter {
-        physics: Physics {
-            position: Point2::new(100.0, 100.0),
-            velocity: 0,
-            acceleration: 0
-        },
-        sprite: Sprite {
-            image: Image::new(ctx, PathBuf::from("\\MainCharacter\\main_character_3.png").as_path()).unwrap()
-        }
-    };
-
-    mc.build_entity(&mut state.ecs);
+    build_entities(&mut state.ecs, ctx);
 
     event::run(ctx, event_loop, state).unwrap();
 }
@@ -93,4 +82,8 @@ pub fn main() {
 fn register_components(ecs: &mut World) {
     ecs.register::<Physics>();
     ecs.register::<Sprite>();
+}
+
+fn build_entities(ecs: &mut World, ctx: &mut Context) {
+    MainCharacter::build_entity(ecs, ctx);
 }
