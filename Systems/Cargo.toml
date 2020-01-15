@@ -1,5 +1,5 @@
 [package]
-name = "main"
+name = "Systems"
 version = "0.1.0"
 authors = ["Tyler Moroso <tlmoroso55@gmail.com>"]
 edition = "2018"
@@ -9,7 +9,4 @@ edition = "2018"
 [dependencies]
 ggez = "0.5.1"
 specs = "0.15.1"
-specs-derive = "0.4.0"
 Components = {path = "..\\Components"}
-Entities = {path = "..\\Entities"}
-Systems = {path = "..\\Systems"}
