@@ -1,0 +1,33 @@
+{
+  "physics": {
+    "position": [100.0, 100.0],
+    "velocity": 0.0,
+    "acceleration": 0.0
+  },
+  "sprite": {
+    "image": "\\MainCharacter\\main_character.png",
+    "draw_params": {
+      "src": [
+        0.0,
+        0.0,
+        1.0,
+        0.498046875
+      ],
+      "dest": [
+        100.0,
+        100.0
+      ]
+    }
+  },
+  "movement": {
+    "states": {
+      "walking_state": {
+        "WALK_CYCLE": 2,
+        "FRAME_COUNT": 8,
+        "current_cycle": 0,
+        "frame_counter": 0
+      }
+    },
+    "current_state": "walking_state"
+  }
+}

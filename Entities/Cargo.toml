@@ -10,4 +10,8 @@ edition = "2018"
 ggez = "0.5.1"
 specs = "0.15.1"
 specs-derive = "0.4.0"
+warmy = "0.13.0"
+mint = "0.5.4"
+serde = "1.0.104"
+
 Components = {path = "..\\Components"}
