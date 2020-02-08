@@ -1,0 +1,26 @@
+{
+  "sprite": {
+    "image": "\\Clickables\\button.png",
+    "draw_params": {
+      "src": [
+        0.0,
+        0.0,
+        1.0,
+        0.32942708
+      ],
+      "dest": [
+        750,
+        500
+      ]
+    }
+  },
+  "clickable": {
+    "is_clicked": false,
+    "is_focused": false
+  },
+  "physics": {
+    "position": [500, 500],
+    "velocity": 0,
+    "acceleration": 0
+  }
+}
