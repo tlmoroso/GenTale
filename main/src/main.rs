@@ -1,17 +1,12 @@
 use std::env;
 use std::path;
-use ggez;
+
 use ggez::{conf, ContextBuilder, event};
-
-use specs::prelude::*;
-
-use warmy::{Store, StoreOpt};
 
 extern crate Components;
 extern crate Entities;
 extern crate Systems;
 
-mod draw;
 mod input;
 mod main_constants;
 mod state;
@@ -34,9 +29,6 @@ pub fn main() {
         .unwrap();
 
     let state = &mut State::new(ctx);
-
-    Components::register_components(&mut state.ecs);
-    Entities::build_entities(&mut state.ecs, &mut state.store, ctx);
 
     event::run(ctx, event_loop, state).unwrap();
 }

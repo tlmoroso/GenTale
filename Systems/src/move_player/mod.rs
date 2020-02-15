@@ -1,5 +1,5 @@
 use Components::physics::Physics;
-use specs::{World, WorldExt, ReadStorage, WriteStorage, System, ReadExpect};
+use specs::{WriteStorage, System, ReadExpect};
 use Components::player::Player;
 use std::cmp::{max, min};
 use Components::player_movement::{MovementStates, STATE, PlayerMovement};

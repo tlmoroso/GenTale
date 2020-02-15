@@ -5,7 +5,7 @@
     "acceleration": 0.0
   },
   "sprite": {
-    "image": "\\MainCharacter\\main_character.png",
+    "image": "\\Sprites\\main_character.png",
     "draw_params": {
       "src": [
         0.0,

@@ -2,18 +2,12 @@ use Components::sprite::{Sprite, SpriteJSON};
 use Components::clickable::Clickable;
 use Components::physics::{Physics, PhysicsJSON};
 use crate::MyEntity;
-use specs::{World, WorldExt, Builder};
+use specs::{World, WorldExt, Builder, Entity};
 use warmy::{Store, SimpleKey, Res};
 use ggez::Context;
 use warmy::json::Json;
-use ggez::graphics::{Image, DrawParam, Rect};
-use std::path::PathBuf;
-use Components::{point_from_slice, rect_from_slice};
-use ggez::input::mouse::button_pressed;
 use std::borrow::Borrow;
 use serde::Deserialize;
-
-const JSON_PATH: &str = "Entities/src/button/button.json";
 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "snake_case")]
@@ -23,6 +17,7 @@ struct ButtonJSON {
     physics: PhysicsJSON
 }
 
+#[derive(Debug)]
 pub struct Button {
     sprite: Sprite,
     clickable: Clickable,
@@ -30,7 +25,7 @@ pub struct Button {
 }
 
 impl MyEntity for Button {
-    fn build_entity(ecs: &mut World, store: &mut Store<Context, SimpleKey>, ctx: &mut Context, json_path: &str) {
+    fn build_entity(ecs: &mut World, store: &mut Store<Context, SimpleKey>, ctx: &mut Context, json_path: &str) -> Option<Entity> {
         let button_json: Result<Res<ButtonJSON>, _> = store.get_by(&SimpleKey::from_path(json_path), ctx, Json);
         match button_json {
             Ok(button_default) => {
@@ -40,13 +35,16 @@ impl MyEntity for Button {
                     physics: Physics::from(button_default.borrow().physics.borrow())
                 };
 
-                ecs.create_entity()
+                Some(ecs.create_entity()
                     .with(button.physics)
                     .with(button.clickable)
                     .with(button.sprite)
-                    .build();
+                    .build())
             }
-            Err(e) => eprintln!("{}", e)
+            Err(e) => {
+                eprintln!("{}", e);
+                None
+            }
         }
     }
 }

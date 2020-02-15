@@ -2,12 +2,13 @@ use specs_derive;
 use specs::prelude::*;
 use ggez::graphics::{Image, Rect, DrawParam};
 use serde::Deserialize;
-use crate::{rect_from_slice, point_from_slice};
+use crate::{rect_from_slice, point_from_slice, vector_from_slice};
 use std::borrow::Borrow;
 use std::path::PathBuf;
 use ggez::Context;
+use mint::Vector2;
 
-#[derive(Component)]
+#[derive(Component, Debug)]
 pub struct Sprite {
     pub image: Image,
     pub draw_params: DrawParam,
@@ -17,7 +18,8 @@ pub struct Sprite {
 #[serde(rename_all = "snake_case")]
 pub struct DrawParamsJSON {
     pub src: [f32; 4],
-    pub dest: [f32; 2]
+    pub dest: [f32; 2],
+    pub scale: [f32; 2],
 }
 
 #[derive(Debug, Deserialize)]
@@ -33,7 +35,8 @@ impl Sprite {
             image: Image::new(ctx, PathBuf::from(s.image.as_str()).as_path()).unwrap(),
             draw_params: DrawParam::new()
                 .src(rect_from_slice(s.draw_params.src.borrow()))
-                .dest(point_from_slice(s.draw_params.dest.borrow())),
+                .dest(point_from_slice(s.draw_params.dest.borrow()))
+                .scale(vector_from_slice(s.draw_params.scale.borrow()))
         }
     }
 }

@@ -11,17 +11,11 @@ use specs::prelude::*;
 use crate::MyEntity;
 use ggez::Context;
 use ggez::graphics::{Image, DrawParam, Rect};
-use mint::Point2;
 
-use std::path::PathBuf;
-
-use warmy::{SimpleKey, StoreOpt, Store, Res};
+use warmy::{SimpleKey, Store, Res};
 use warmy::json::Json;
 use serde::Deserialize;
-use self::Components::{point_from_slice, rect_from_slice};
 use std::borrow::Borrow;
-
-const JSON_PATH: &str = "Entities/src/Main_Character/main_character.json";
 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "snake_case")]
@@ -38,7 +32,7 @@ pub struct MainCharacter {
 }
 
 impl MyEntity for MainCharacter {
-    fn build_entity(ecs: &mut World, store: &mut Store<Context, SimpleKey>, ctx: &mut Context, json_path: &str) {
+    fn build_entity(ecs: &mut World, store: &mut Store<Context, SimpleKey>, ctx: &mut Context, json_path: &str) -> Option<Entity> {
         let mc_json: Result<Res<MainCharacterJSON>, _> = store.get_by(&SimpleKey::from_path(json_path), ctx, Json);
         match mc_json {
             Ok(mc_default) => {
@@ -48,14 +42,16 @@ impl MyEntity for MainCharacter {
                     movement: mc_default.borrow().movement,
                 };
 
-                ecs.create_entity()
+                Some(ecs.create_entity()
                     .with(mc.physics)
                     .with(mc.sprite)
                     .with(mc.movement)
-                    .build();
+                    .build())
             }
-
-            Err(e) => eprintln!("{}", e)
+            Err(e) => {
+                eprintln!("{}", e);
+                None
+            }
         }
     }
 }

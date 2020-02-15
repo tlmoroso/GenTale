@@ -9,17 +9,18 @@
         0.32942708
       ],
       "dest": [
-        750,
-        500
-      ]
+        0,
+        0
+      ],
+      "scale": [0.2, 0.2]
     }
   },
   "clickable": {
     "is_clicked": false,
-    "is_focused": false
+    "is_focused": true
   },
   "physics": {
-    "position": [500, 500],
+    "position": [0, 0],
     "velocity": 0,
     "acceleration": 0
   }

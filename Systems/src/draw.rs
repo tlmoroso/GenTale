@@ -9,10 +9,9 @@ use Components::physics::Physics;
 use Components::sprite::Sprite;
 
 pub fn draw_sprite(ecs: &World, ctx: &mut Context) {
-    let physics = ecs.read_storage::<Physics>();
     let sprites = ecs.read_storage::<Sprite>();
 
-    for (phys, sprite) in (&physics, &sprites).join() {
+    for (sprite) in (&sprites).join() {
         match draw(ctx, &sprite.image, sprite.draw_params) {
             Ok(_) => (),
             Err(e) => eprintln!("{}", e)

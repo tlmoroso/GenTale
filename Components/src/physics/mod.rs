@@ -5,7 +5,7 @@ use serde::Deserialize;
 use crate::point_from_slice;
 use std::borrow::Borrow;
 
-#[derive(Component)]
+#[derive(Component, Debug)]
 pub struct Physics {
     pub position: Point2<f32>,
     pub velocity: f32,
